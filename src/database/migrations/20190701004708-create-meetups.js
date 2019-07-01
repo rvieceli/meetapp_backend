@@ -12,7 +12,7 @@ module.exports = {
         allowNull: false,
       },
       description: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       location: {
@@ -20,7 +20,7 @@ module.exports = {
         allowNull: false,
       },
       date: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
         allowNull: false,
       },
       user_id: {
