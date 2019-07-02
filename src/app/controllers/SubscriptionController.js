@@ -1,7 +1,12 @@
 import { isBefore } from 'date-fns';
 
+import User from '../models/User';
 import Meetup from '../models/Meetup';
 import Subscription from '../models/Subscription';
+
+import SubscriptionMail from '../jobs/SubscriptionMail';
+import Queue from '../../lib/Queue';
+import UnsubscriptionMail from '../jobs/UnsubscriptionMail';
 
 class SubscriptionController {
   /**
@@ -55,9 +60,40 @@ class SubscriptionController {
       user_id: req.userId,
     });
 
+    const email_data = await Subscription.findByPk(subscription.id, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+        },
+        {
+          model: Meetup,
+          as: 'meetup',
+          include: [
+            {
+              model: User,
+              as: 'user',
+            },
+          ],
+        },
+      ],
+    });
+
+    /**
+     * Send e-mail about subscription
+     */
+    await Queue.add(SubscriptionMail.key, {
+      subscription: email_data,
+    });
+
     return res.json(subscription);
   }
 
+  /**
+   * Unsubscribe
+   * @param {Request} req
+   * @param {Response} res
+   */
   async delete(req, res) {
     const { meetup_id } = req.params;
 
@@ -86,6 +122,25 @@ class SubscriptionController {
     }
 
     await subscribe.destroy();
+
+    /**
+     * Send e-mail about subscription
+     */
+    const meetup = await Meetup.findByPk(meetup_id, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+        },
+      ],
+    });
+
+    const user = await User.findByPk(req.userId);
+
+    await Queue.add(UnsubscriptionMail.key, {
+      meetup,
+      user,
+    });
 
     return res.json();
   }
