@@ -8,6 +8,7 @@ import PasswordController from './app/controllers/PasswordController';
 import FileController from './app/controllers/FileController';
 import MeetupController from './app/controllers/MeetupController';
 import SubscriptionController from './app/controllers/SubscriptionController';
+import OrganizingController from './app/controllers/OrganizingController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -35,5 +36,7 @@ routes.delete(
   '/meetups/:meetup_id/subscriptions',
   SubscriptionController.delete
 );
+
+routes.get('/organizing', OrganizingController.index);
 
 export default routes;
