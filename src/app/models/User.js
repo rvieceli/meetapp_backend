@@ -13,7 +13,6 @@ class User extends Model {
             this.setDataValue('password', bcrypt.hashSync(value, 8));
           },
         },
-        provider: Sequelize.BOOLEAN,
       },
       {
         sequelize,
