@@ -1,5 +1,5 @@
 import { format, parseISO } from 'date-fns';
-import { ptBR } from 'date-fns/locale/pt-BR';
+import pt from 'date-fns/locale/pt-BR';
 
 import Mail from '../../lib/Mail';
 
@@ -23,7 +23,7 @@ class UnsubscriptionMail {
           parseISO(meetup.date),
           "iiii, dd 'de' MMMM', às' h:mm'h'",
           {
-            locale: ptBR,
+            locale: pt,
           }
         ),
         location: meetup.location,
