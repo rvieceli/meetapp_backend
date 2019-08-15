@@ -13,6 +13,8 @@ class User extends Model {
             this.setDataValue('password', bcrypt.hashSync(value, 8));
           },
         },
+        reset_password_token: Sequelize.UUID,
+        reset_password_expires: Sequelize.DATE,
       },
       {
         sequelize,

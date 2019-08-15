@@ -3,6 +3,7 @@ import multer from 'multer';
 import multerConfig from './config/multer';
 
 import UserController from './app/controllers/UserController';
+import PasswordResetController from './app/controllers/PasswordResetController';
 import SessionController from './app/controllers/SessionController';
 import PasswordController from './app/controllers/PasswordController';
 import FileController from './app/controllers/FileController';
@@ -17,6 +18,9 @@ const upload = multer(multerConfig);
 
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
+
+routes.put('/reset/:token', PasswordResetController.update);
+routes.post('/reset', PasswordResetController.store);
 
 routes.use(authMiddleware);
 

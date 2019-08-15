@@ -19,7 +19,7 @@ class SessionController {
       await schema.validate(req.body, { abortEarly: false });
     } catch (err) {
       return res.status(400).json({
-        error: 'Validation failed',
+        error: 'Falha na autenticação',
         validationErrors: err.errors,
       });
     }
@@ -29,11 +29,11 @@ class SessionController {
     const user = await User.findByEmail(email);
 
     if (!user) {
-      return res.status(401).json({ error: 'User not found' });
+      return res.status(401).json({ error: 'Usuário ou senha incorreto' });
     }
 
     if (!(await user.checkPassword(password))) {
-      return res.status(401).json({ error: 'Password does not match' });
+      return res.status(401).json({ error: 'Usuário ou senha incorretos' });
     }
 
     const { id, name } = user;
