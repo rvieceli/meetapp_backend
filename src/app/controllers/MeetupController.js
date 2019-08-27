@@ -44,6 +44,25 @@ class MeetupController {
     return res.json(meetups);
   }
 
+  async show(req, res) {
+    const meetup = await Meetup.findByPk(req.params.id, {
+      attributes: ['id', 'title', 'description', 'location', 'date'],
+      include: [
+        {
+          model: File,
+          as: 'banner',
+          attributes: ['id', 'path', 'url'],
+        },
+      ],
+    });
+
+    if (!meetup) {
+      return res.status(404).json({ error: 'Meetup to update does not found' });
+    }
+
+    return res.json(meetup);
+  }
+
   /**
    * Create a new meetup
    * @param {Request} req
